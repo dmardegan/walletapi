@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.wallet.entity.User;
+import com.wallet.entity.Users;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -30,7 +30,7 @@ public class UserRepositoryTest {
 
 	@BeforeAll
 	public void setUp() {
-		User u = new User();
+		Users u = new Users();
 		u.setName("set up user");
 		u.setPassword("senha123");
 		u.setEmail(UserRepositoryTest.EMAIL);
@@ -44,19 +44,19 @@ public class UserRepositoryTest {
 
 	@Test
 	public void findByEmail() {
-		Optional<User> response = repository.findByEmailEquals(UserRepositoryTest.EMAIL);
+		Optional<Users> response = repository.findByEmailEquals(UserRepositoryTest.EMAIL);
 		assertTrue(response.isPresent());
 		assertEquals(response.get().getEmail(), UserRepositoryTest.EMAIL);
 	}
 
 	@Test
 	public void testSave() {
-		User u = new User();
+		Users u = new Users();
 		u.setName("teste");
 		u.setPassword("12345");
 		u.setEmail("teste@test.com.br");
 
-		User response = repository.save(u);
+		Users response = repository.save(u);
 		assertNotNull(response);
 	}
 }

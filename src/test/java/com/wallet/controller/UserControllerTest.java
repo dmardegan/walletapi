@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wallet.dto.UserDTO;
-import com.wallet.entity.User;
+import com.wallet.entity.Users;
 import com.wallet.service.UserService;
 
 @ExtendWith(SpringExtension.class)
@@ -31,7 +31,7 @@ public class UserControllerTest {
 	private static final Long ID = 00000000001L;
 	private static final String EMAIL = "test@test.com";
 	private static final String NAME = "José do Teste";
-	private static final String PASSWORD = "12345";
+	private static final String PASSWORD = "123456";
 	private static final String URL = "/User";
 
 	@MockBean
@@ -40,8 +40,8 @@ public class UserControllerTest {
 	@Autowired
 	MockMvc mvc;
 
-	public User getMockUser() {
-		User u = new User();
+	public Users getMockUser() {
+		Users u = new Users();
 		u.setId(ID);
 		u.setEmail(EMAIL);
 		u.setName(NAME);
@@ -52,7 +52,7 @@ public class UserControllerTest {
 
 	@Test
 	public void testSave() throws Exception {
-		BDDMockito.given(service.save(Mockito.any(User.class))).willReturn(getMockUser());
+		BDDMockito.given(service.save(Mockito.any(Users.class))).willReturn(getMockUser());
 		
 		mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, EMAIL, NAME, PASSWORD)).
 				contentType(MediaType.APPLICATION_JSON).
@@ -61,12 +61,12 @@ public class UserControllerTest {
 		andExpect(jsonPath("$.data.id").value(ID)).
 		andExpect(jsonPath("$.data.email").value(EMAIL)).
 		andExpect(jsonPath("$.data.name").value(NAME)).
-		andExpect(jsonPath("$.data.password").value(PASSWORD));
+		andExpect(jsonPath("$.data.password").doesNotExist());
 	}
 	
 	@Test
 	public void testSaveInvalidUser() throws Exception {
-		BDDMockito.given(service.save(Mockito.any(User.class))).willReturn(getMockUser());
+		BDDMockito.given(service.save(Mockito.any(Users.class))).willReturn(getMockUser());
 		
 		mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, "1mail", NAME, PASSWORD)).
 				contentType(MediaType.APPLICATION_JSON).
