@@ -2,11 +2,11 @@ package com.wallet.service;
 
 import java.util.Optional;
 
-import com.wallet.entity.Users;
+import com.wallet.entity.User;
 
 public interface UserService {
 
-	Users save(Users u);
+	User save(User u);
 
-	Optional<Users> findByEmail(String email);
+	Optional<User> findByEmail(String email);
 }

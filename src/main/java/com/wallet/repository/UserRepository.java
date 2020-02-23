@@ -4,10 +4,10 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.wallet.entity.Users;
+import com.wallet.entity.User;
 
-public interface UserRepository extends JpaRepository<Users, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 	
-	Optional<Users> findByEmailEquals(String email);
+	Optional<User> findByEmailEquals(String email);
 
 }

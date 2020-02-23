@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wallet.dto.UserDTO;
-import com.wallet.entity.Users;
+import com.wallet.entity.User;
 import com.wallet.service.UserService;
 
 @ExtendWith(SpringExtension.class)
@@ -40,8 +40,8 @@ public class UserControllerTest {
 	@Autowired
 	MockMvc mvc;
 
-	public Users getMockUser() {
-		Users u = new Users();
+	public User getMockUser() {
+		User u = new User();
 		u.setId(ID);
 		u.setEmail(EMAIL);
 		u.setName(NAME);
@@ -52,7 +52,7 @@ public class UserControllerTest {
 
 	@Test
 	public void testSave() throws Exception {
-		BDDMockito.given(service.save(Mockito.any(Users.class))).willReturn(getMockUser());
+		BDDMockito.given(service.save(Mockito.any(User.class))).willReturn(getMockUser());
 		
 		mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, EMAIL, NAME, PASSWORD)).
 				contentType(MediaType.APPLICATION_JSON).
@@ -66,7 +66,7 @@ public class UserControllerTest {
 	
 	@Test
 	public void testSaveInvalidUser() throws Exception {
-		BDDMockito.given(service.save(Mockito.any(Users.class))).willReturn(getMockUser());
+		BDDMockito.given(service.save(Mockito.any(User.class))).willReturn(getMockUser());
 		
 		mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, "1mail", NAME, PASSWORD)).
 				contentType(MediaType.APPLICATION_JSON).

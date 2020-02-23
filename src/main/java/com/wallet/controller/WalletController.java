@@ -17,7 +17,7 @@ import com.wallet.response.Response;
 import com.wallet.service.WalletService;
 
 @RestController
-@RequestMapping ("Wallet")
+@RequestMapping ("wallet")
 public class WalletController {
 
 	@Autowired

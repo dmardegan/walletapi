@@ -9,12 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import lombok.Data;
 
 
 @Entity(name = "users_wallet")
 @Data
+@Table(name="users_wallet")
 public class UserWallet implements Serializable {
 
 	/**
@@ -28,7 +30,7 @@ public class UserWallet implements Serializable {
 	
 	@JoinColumn(name = "users", referencedColumnName = "id")
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Users user;
+	private User user;
 
 	@JoinColumn(name = "wallet", referencedColumnName = "id")
 	@ManyToOne(fetch = FetchType.LAZY)

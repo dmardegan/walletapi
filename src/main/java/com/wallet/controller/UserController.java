@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wallet.dto.UserDTO;
-import com.wallet.entity.Users;
+import com.wallet.entity.User;
 import com.wallet.response.Response;
 import com.wallet.service.UserService;
 import com.wallet.util.Bcrypt;
 
 @RestController
-@RequestMapping("User")
+@RequestMapping("user")
 public class UserController {
 
 	@Autowired
@@ -33,14 +33,14 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
 		
-		Users user = service.save(convertDTO2Entity(userDTO));
+		User user = service.save(convertDTO2Entity(userDTO));
 
 		response.setData(convertEntity2DTO(user));
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
-	private Users convertDTO2Entity(UserDTO dto) {
-		Users u = new Users();
+	private User convertDTO2Entity(UserDTO dto) {
+		User u = new User();
 		u.setId(dto.getId());
 		u.setEmail(dto.getEmail());
 		u.setName(dto.getName());
@@ -48,7 +48,7 @@ public class UserController {
 		return u;
 	}
 
-	private UserDTO convertEntity2DTO(Users user) {
+	private UserDTO convertEntity2DTO(User user) {
 		UserDTO dto = new UserDTO();
 		dto.setId(user.getId());
 		dto.setEmail(user.getEmail());
