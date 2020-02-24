@@ -32,7 +32,7 @@ public class UserControllerTest {
 	private static final String EMAIL = "test@test.com";
 	private static final String NAME = "José do Teste";
 	private static final String PASSWORD = "123456";
-	private static final String URL = "/User";
+	private static final String URL = "/user";
 
 	@MockBean
 	UserService service;
@@ -49,7 +49,7 @@ public class UserControllerTest {
 
 		return u;
 	}
-
+	
 	@Test
 	public void testSave() throws Exception {
 		BDDMockito.given(service.save(Mockito.any(User.class))).willReturn(getMockUser());
