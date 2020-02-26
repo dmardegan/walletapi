@@ -124,9 +124,9 @@ public class WalletItemRepositoryTest {
 		
 		Assertions.assertThrows(ConstraintViolationException.class, () -> repository.save(wi));
 	}
-	
+
 	@Test
-	@Order(96)
+	@Order(95)
 	public void testFindByTypeOut() {
 		Optional<Wallet> w = walletRepository.findById(savedWallet);
 		repository.save(new WalletItem(null, w.get(), DATE, WalletItemType.OU, DESCRIPTION, VALUE));
@@ -137,7 +137,7 @@ public class WalletItemRepositoryTest {
 	}
 	
 	@Test
-	@Order(97)
+	@Order(96)
 	public void testFindByType() {
 		List<WalletItem> response = repository.findByWalletIdAndType(savedWallet, TYPE);
 		assertEquals(response.size(), 1);
@@ -145,7 +145,7 @@ public class WalletItemRepositoryTest {
 	}
 	
 	@Test
-	@Order(98)
+	@Order(97)
 	public void testFindBetweenDates() {
 		Optional<Wallet> w = walletRepository.findById(savedWallet);
 		
@@ -163,6 +163,19 @@ public class WalletItemRepositoryTest {
 		assertEquals(response.getContent().size(), 2);
 		assertEquals(response.getTotalElements(), 2);
 		assertEquals(response.getContent().get(0).getWallet().getId(), savedWallet);
+	}
+
+	@Test
+	@Order(98)
+	public void testSumByWallet() {
+		System.out.println("##############testSumByWallet");
+		Optional<Wallet> w = walletRepository.findById(savedWallet);
+		repository.save(new WalletItem(null, w.get(), DATE, WalletItemType.OU, DESCRIPTION, VALUE));
+		
+		
+		BigDecimal response = repository.sumByWalletId(savedWallet);
+		System.out.println("######### w: " + savedWallet + " - $ " + response.toString());
+		assertEquals(response.compareTo(BigDecimal.valueOf(1275)), 0);
 	}
 	
 	@Test
