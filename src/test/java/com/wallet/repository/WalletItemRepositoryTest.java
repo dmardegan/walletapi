@@ -6,7 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.ConstraintViolationException;
@@ -19,11 +22,13 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -121,7 +126,47 @@ public class WalletItemRepositoryTest {
 	}
 	
 	@Test
-	@Order(3)
+	@Order(96)
+	public void testFindByTypeOut() {
+		Optional<Wallet> w = walletRepository.findById(savedWallet);
+		repository.save(new WalletItem(null, w.get(), DATE, WalletItemType.OU, DESCRIPTION, VALUE));
+		
+		List<WalletItem> response = repository.findByWalletIdAndType(savedWallet, WalletItemType.OU);
+		assertEquals(response.size(), 1);
+		assertEquals(response.get(0).getType(), WalletItemType.OU);
+	}
+	
+	@Test
+	@Order(97)
+	public void testFindByType() {
+		List<WalletItem> response = repository.findByWalletIdAndType(savedWallet, TYPE);
+		assertEquals(response.size(), 1);
+		assertEquals(response.get(0).getType(), TYPE);
+	}
+	
+	@Test
+	@Order(98)
+	public void testFindBetweenDates() {
+		Optional<Wallet> w = walletRepository.findById(savedWallet);
+		
+		LocalDateTime localDateTime = DATE.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+		
+		Date currentDatePlusFiveDays = Date.from(localDateTime.plusDays(5).atZone(ZoneId.systemDefault()).toInstant());
+		Date currentDatePlusSevenDays = Date.from(localDateTime.plusDays(7).atZone(ZoneId.systemDefault()).toInstant());
+		
+		repository.save(new WalletItem(null, w.get(), currentDatePlusFiveDays, TYPE, DESCRIPTION, VALUE));
+		repository.save(new WalletItem(null, w.get(), currentDatePlusSevenDays, TYPE, DESCRIPTION, VALUE));
+		
+		PageRequest pg = PageRequest.of(0, 10);
+		Page<WalletItem> response = repository.findAllByWalletIdAndDateGreaterThanEqualAndDateLessThanEqual(savedWallet, DATE, currentDatePlusSevenDays, pg);
+		
+		assertEquals(response.getContent().size(), 2);
+		assertEquals(response.getTotalElements(), 2);
+		assertEquals(response.getContent().get(0).getWallet().getId(), savedWallet);
+	}
+	
+	@Test
+	@Order(99)
 	public void testUpdate() {
 		Optional<WalletItem> wi = repository.findById(savedWalletItem);
 		WalletItem walletItemChanged = wi.get();
@@ -136,7 +181,7 @@ public class WalletItemRepositoryTest {
 	}
 	
 	@Test
-	@Order(4)
+	@Order(100)
 	@DisplayName("test delete wallet item by id")
 	public void testDeleteWalletItem() {
 		Optional<WalletItem> wi = repository.findById(savedWalletItem);
