@@ -3,6 +3,7 @@ package com.wallet.service.impl;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +45,16 @@ public class WalletItemServiceImpl implements WalletItemService {
 	@Override
 	public BigDecimal sumByWalletId(Long wallet) {
 		return repository.sumByWalletId(wallet);
+	}
+
+	@Override
+	public Optional<WalletItem> findById(Long id) {
+		return repository.findById(id);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		repository.deleteById(id);
 	}
 
 }
