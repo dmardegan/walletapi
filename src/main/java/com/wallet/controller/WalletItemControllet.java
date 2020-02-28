@@ -117,7 +117,7 @@ public class WalletItemControllet {
 		return ResponseEntity.ok().body(response);
 	}
 	
-	@DeleteMapping
+	@DeleteMapping(value = "/delete/{wallet}")
 	public ResponseEntity<Response<String>> delete(@PathVariable("wallet") Long wallet) {
 		
 		Response<String> response = new Response<String>();
@@ -131,7 +131,7 @@ public class WalletItemControllet {
 		
 		service.deleteById(wallet);
 		
-		response.setData("The wallet " + wallet + " was deleted successful");
+		response.setData("The wallet item " + wallet + " was deleted successful");
 		
 		return ResponseEntity.ok().body(response);
 	}
