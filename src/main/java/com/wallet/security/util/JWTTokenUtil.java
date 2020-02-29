@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.dialect.identity.GetGeneratedKeysDelegate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -30,16 +29,25 @@ public class JWTTokenUtil {
 	public String getUsernameFromToken(String token) {
 		String username;
 		
-		Claims claims = getClaimsFromToken(token);
-		username = claims.getSubject();
+		try {
+			Claims claims = getClaimsFromToken(token);
+			username = claims.getSubject();			
+		} catch (Exception e) {
+			username = null;
+		}
 		
 		return username;
 	}
 	
 	public Date getExpirationDateFromToken(String token) {
 		Date expiration;
-		Claims claims = getClaimsFromToken(token);
-		expiration = claims.getExpiration();
+		
+		try {
+			Claims claims = getClaimsFromToken(token);
+			expiration = claims.getExpiration();
+		} catch (Exception e) {
+			expiration = null;
+		}
 		
 		return expiration;
 	}

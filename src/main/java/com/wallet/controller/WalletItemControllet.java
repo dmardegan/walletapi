@@ -26,10 +26,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wallet.dto.WalletItemDTO;
+import com.wallet.entity.UserWallet;
 import com.wallet.entity.Wallet;
 import com.wallet.entity.WalletItem;
 import com.wallet.response.Response;
+import com.wallet.service.UserWalletService;
 import com.wallet.service.WalletItemService;
+import com.wallet.util.Util;
 import com.wallet.util.enums.WalletItemType;
 
 @RestController
@@ -38,6 +41,9 @@ public class WalletItemControllet {
 
 	@Autowired
 	private WalletItemService service;
+	
+	@Autowired
+	private UserWalletService userWalletService;
 	
 	@PostMapping
 	public ResponseEntity<Response<WalletItemDTO>> create(@Valid @RequestBody WalletItemDTO dto, BindingResult result) {
@@ -60,6 +66,14 @@ public class WalletItemControllet {
 			@RequestParam(name = "page", defaultValue = "0") int page) {
 		
 		Response<Page<WalletItemDTO>> response = new Response<Page<WalletItemDTO>>();
+		
+		Optional<UserWallet> userWallet = userWalletService.findByUserIdAndWallet(Util.getAuthenticatedUserId(), wallet);
+		
+		if(!userWallet.isPresent()) {
+			response.getErrors().add("You don't have access to this wallet");
+			return ResponseEntity.badRequest().body(response);
+		}
+		
 		Page<WalletItem> items = service.findBetweenDates(wallet, startDate, endDate, page);
 		Page<WalletItemDTO> dto = items.map(wi -> this.convertEntity2DTO(wi));
 		response.setData(dto);
