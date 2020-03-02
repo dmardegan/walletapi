@@ -60,7 +60,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				"/auth/**", 
 				"/configuration/security", 
 				"/webjars/**", 
-				"/user/**").permitAll().anyRequest().authenticated();
+				"/user/**",
+				"/v2/api-docs",
+				"/swagger-resources/**",
+				"/swagger-ui.html").permitAll().anyRequest().authenticated();
 		
 		http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 		http.headers().cacheControl();
