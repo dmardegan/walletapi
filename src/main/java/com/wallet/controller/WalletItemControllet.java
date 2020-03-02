@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -44,6 +46,8 @@ public class WalletItemControllet {
 	
 	@Autowired
 	private UserWalletService userWalletService;
+	
+	private static final Logger log = LoggerFactory.getLogger(WalletItemControllet.class);
 	
 	@PostMapping
 	public ResponseEntity<Response<WalletItemDTO>> create(@Valid @RequestBody WalletItemDTO dto, BindingResult result) {
@@ -84,6 +88,8 @@ public class WalletItemControllet {
 	@GetMapping(value = "/type/{wallet}")
 	public ResponseEntity<Response<List<WalletItemDTO>>> findByWalletIdAndType(@PathVariable("wallet") Long wallet,
 			@RequestParam("type") String type) {
+		
+		log.info("Finding by wallet {} and type {}", wallet, type);
 		
 		Response<List<WalletItemDTO>> response = new Response<List<WalletItemDTO>>();
 		
