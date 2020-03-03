@@ -1,1 +1,1 @@
-hub[![Build Status](https://travis-ci.org/dmardegan/walletapi.svg?branch=master)](https://travis-ci.org/dmardegan/walletapi)
+[![Build Status](https://travis-ci.org/dmardegan/walletapi.svg?branch=master)](https://travis-ci.org/dmardegan/walletapi)
