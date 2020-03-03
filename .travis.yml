@@ -7,5 +7,5 @@ before_install:
 deploy:
   provider: heroku
   api_key:
-    - secure: 41c346a3-fe21-4e0f-a0f3-7ab85c9e147d
-  app: $APP
+    - secure: "41c346a3-fe21-4e0f-a0f3-7ab85c9e147d"
+  app: dmardegan-wallet-api
